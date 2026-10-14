@@ -1,0 +1,47 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    const int MAX_STUDENTS = 50;
+    const int MAX_SUBJECTS = 10;
+
+    string names[MAX_STUDENTS]; // 1D Array
+    int marks[MAX_STUDENTS][MAX_SUBJECTS]; // 2D Array
+    int total[MAX_STUDENTS];
+    float average[MAX_STUDENTS];
+
+    int n, m;
+    cout << "=== STUDENT GRADE MANAGEMENT ===" << endl;
+    cout << "Enter number of students: ";
+    cin >> n;
+    cout << "Enter number of subjects: ";
+    cin >> m;
+
+    for(int i=0; i<n; i++) {
+        cout << "\nEnter name of student " << i+1 << ": ";
+        cin >> names[i];
+        total[i] = 0;
+        for(int j=0; j<m; j++) {
+            cout << " Subject " << j+1 << " mark: ";
+            cin >> marks[i][j];
+            total[i] += marks[i][j];
+        }
+        average[i] = (float)total[i] / m;
+    }
+
+    float maxAvg = 0;
+    string topper = "";
+    cout << "\n--- RESULT TABLE ---\n";
+    cout << "Name\tTotal\tAvg\tGrade\n";
+    for(int i=0; i<n; i++) {
+        char grade = (average[i]>=80)?'A':(average[i]>=60)?'B':'C';
+        cout << names[i] << "\t" << total[i] << "\t" << average[i] << "\t" << grade << endl;
+        if(average[i] > maxAvg) {
+            maxAvg = average[i];
+            topper = names[i];
+        }
+    }
+    cout << "\nTopper: " << topper << " - " << maxAvg << "%" << endl;
+    return 0;
+}
