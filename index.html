@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Array Student Grade System - C++ Live</title>
+<style>
+body{font-family:Arial;background:#0f172a;color:white;padding:20px}
+.container{max-width:900px;margin:auto;background:#1e293b;padding:25px;border-radius:12px}
+h1{text-align:center;color:#22c55e}
+.card{background:#334155;padding:15px;border-radius:8px;margin:10px 0}
+input,button{padding:10px;margin:5px;border-radius:5px;border:none}
+input{width:140px}
+button{background:#22c55e;color:white;font-weight:bold;cursor:pointer}
+button:hover{background:#16a34a}
+table{width:100%;border-collapse:collapse;margin-top:15px;background:white;color:black}
+th,td{border:1px solid #ccc;padding:8px;text-align:center}
+th{background:#22c55e;color:white}
+.topper{background:#fef08a!important;font-weight:bold}
+code{color:#86efac;background:#000;padding:2px 5px;border-radius:3px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Array Student Grade System - C++ Concept LIVE</h1>
+<p style="text-align:center">This project demonstrates <code>1D array names[50]</code> and <code>2D array marks[50][10]</code> from C++ converted to JavaScript for live web</p>
+
+<div class="card">
+<h3>Add Student (Array Implementation)</h3>
+<input id="sName" placeholder="Student Name">
+<input id="m1" type="number" placeholder="Sub 1">
+<input id="m2" type="number" placeholder="Sub 2">
+<input id="m3" type="number" placeholder="Sub 3">
+<button onclick="addStudent()">Add to Array</button>
+<button onclick="clearAll()" style="background:#ef4444">Clear All</button>
+</div>
+
+<div class="card">
+<h3>C++ Logic: <code>for(i=0; i<n; i++) { total = marks[i][0]+marks[i][1]+... }</code></h3>
+<table id="gradeTable">
+<tr><th>No</th><th>Name (names[i])</th><th>Marks (marks[i][j])</th><th>Total</th><th>Average</th><th>Grade</th></tr>
+</table>
+<h2 id="topperResult" style="text-align:center;color:#facc15"></h2>
+</div>
+
+<div class="card">
+<h3>Original C++ Source</h3>
+<a href="https://github.com/Nic-holas124/Array-Student-Grade-System/blob/main/Main.cpp" target="_blank" style="color:#22c55e">View Main.cpp on GitHub</a>
+<p>GitHub Repo: <code>https://github.com/Nic-holas124/Array-Student-Grade-System</code></p>
+</div>
+
+</div>
+
+<script>
+// C++ to JS Array Conversion
+// In C++: string names[50]; int marks[50][10];
+let names = []; // 1D Array
+let marks = []; // 2D Array
+
+function addStudent(){
+ let name = document.getElementById('sName').value;
+ let a = parseInt(document.getElementById('m1').value);
+ let b = parseInt(document.getElementById('m2').value);
+ let c = parseInt(document.getElementById('m3').value);
+ if(!name || isNaN(a)){alert("Enter name and at least 1 mark"); return;}
+ if(names.length >= 50){alert("Array full! Max 50 students [50][10]"); return;}
+ names.push(name);
+ marks.push([a,b||0,c||0]);
+ document.getElementById('sName').value=""; document.getElementById('m1').value=""; document.getElementById('m2').value=""; document.getElementById('m3').value="";
+ display();
+}
+
+function getGrade(avg){
+ if(avg>=80) return 'A';
+ if(avg>=70) return 'B';
+ if(avg>=60) return 'C';
+ if(avg>=50) return 'D';
+ return 'F';
+}
+
+function display(){
+ let table = document.getElementById('gradeTable');
+ table.innerHTML = "<tr><th>No</th><th>Name (names[i])</th><th>Marks (marks[i][j])</th><th>Total</th><th>Average</th><th>Grade</th></tr>";
+ let maxAvg = -1, topperIndex = -1;
+ let totals = [];
+ let avgs = [];
+
+ // C++ loop logic: for(int i=0; i<n; i++)
+ for(let i=0; i<names.length; i++){
+   let total = 0;
+   for(let j=0; j<marks[i].length; j++){ total += marks[i][j]; } // 2D array traversal
+   let avg = total / marks[i].length;
+   totals[i]=total; avgs[i]=avg;
+   if(avg > maxAvg){ maxAvg=avg; topperIndex=i; }
+ }
+
+ for(let i=0; i<names.length; i++){
+   let row = table.insertRow();
+   if(i==topperIndex) row.className="topper";
+   row.insertCell(0).innerText = i+1;
+   row.insertCell(1).innerText = names[i];
+   row.insertCell(2).innerText = marks[i].join(", ");
+   row.insertCell(3).innerText = totals[i];
+   row.insertCell(4).innerText = avgs[i].toFixed(2);
+   row.insertCell(5).innerText = getGrade(avgs[i]);
+ }
+
+ if(topperIndex>=0){
+   document.getElementById('topperResult').innerText = `Topper is: ${names[topperIndex]} with ${maxAvg.toFixed(2)}% - Found using array traversal!`;
+ }
+}
+
+function clearAll(){ names=[]; marks=[]; display(); document.getElementById('topperResult').innerText=""; }
+</script>
+</body>
+</html>
